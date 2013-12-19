@@ -732,11 +732,12 @@ module.provider('Restangular', function() {
                       var parentId = config.getIdFromElem(parent);
                       var parentUrl = config.getUrlFromElem(parent);
 
-                      var restangularFieldsForParent = _.union(
-                        _.values( _.pick(config.restangularFields, ['route', 'parentResource']) ),
-                        config.extraFields
-                      );
-                      var parentResource = _.pick(parent, restangularFieldsForParent);
+                      var restangularFieldsForParent = [config.restangularFields.route, config.restangularFields.parentResource].concat(config.extraFields);
+
+                      var parentResource = {};
+                      angular.forEach(restangularFieldsForParent, function(field) {
+                         parentResource[field] = parent[field];
+                      });
 
                       if (config.isValidId(parentId)) {
                           config.setIdToElem(parentResource, parentId);
