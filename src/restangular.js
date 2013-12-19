@@ -399,7 +399,7 @@ module.provider('Restangular', function() {
                 }
 
                 typeTransformers.push(function(coll, elem) {
-                    if (null === isCollection || (coll == isCollection)) {
+                    if (null === isCollection || (coll === isCollection)) {
                         return transformer(elem);
                     }
                     return elem;
@@ -673,7 +673,7 @@ module.provider('Restangular', function() {
                 if (!params) return url;
                 var parts = [];
                 forEachSorted(params, function(value, key) {
-                  if (value == null || value == undefined) return;
+                  if (value === null || value === undefined) return;
                   if (!angular.isArray(value)) value = [value];
 
                   angular.forEach(value, function(v) {
