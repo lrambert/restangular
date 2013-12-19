@@ -87,7 +87,7 @@ module.provider('Restangular', function() {
                 methods.push('common');
               }
 
-              _.each(methods, function (method) {
+              angular.forEach(methods, function (method) {
                 config.defaultRequestParams[method] = params;
               });
               return this;
@@ -202,7 +202,7 @@ module.provider('Restangular', function() {
             config.setFieldToElem = function(field, elem, value) {
               var properties = field.split('.');
               var idValue = elem;
-              _.each(_.initial(properties), function(prop) {
+              angular.forEach(_.initial(properties), function(prop) {
                 idValue[prop] = {};
                 idValue = idValue[prop];
               });
@@ -213,7 +213,7 @@ module.provider('Restangular', function() {
             config.getFieldFromElem = function(field, elem) {
               var properties = field.split('.');
               var idValue = angular.copy(elem);
-              _.each(properties, function(prop) {
+              angular.forEach(properties, function(prop) {
                 if (idValue) {
                   idValue = idValue[prop];
                 }
@@ -418,7 +418,7 @@ module.provider('Restangular', function() {
                 var typeTransformers = config.transformers[route];
                 var changedElem = elem;
                 if (typeTransformers) {
-                    _.each(typeTransformers, function(transformer) {
+                    angular.forEach(typeTransformers, function(transformer) {
                        changedElem = transformer(isCollection, changedElem);
                     });
                 }
@@ -460,7 +460,7 @@ module.provider('Restangular', function() {
 
             function RestangularResource(config, $http, url, configurer) {
               var resource = {};
-              _.each(_.keys(configurer), function(key) {
+              angular.forEach(_.keys(configurer), function(key) {
                   var value = configurer[key];
 
                   // Add default parameters
@@ -836,7 +836,7 @@ module.provider('Restangular', function() {
               function stripRestangular(elem) {
                 if (angular.isArray(elem)) {
                     var array = [];
-                    _.each(elem, function(value) {
+                    angular.forEach(elem, function(value) {
                         array.push(stripRestangular(value));
                     });
                     return array;
@@ -849,8 +849,8 @@ module.provider('Restangular', function() {
 
               function addCustomOperation(elem) {
                   elem.customOperation = _.bind(customFunction, elem);
-                  _.each(["put", "post", "get", "delete"], function(oper) {
-                      _.each(["do", "custom"], function(alias) {
+                  angular.forEach(["put", "post", "get", "delete"], function(oper) {
+                      angular.forEach(["do", "custom"], function(alias) {
                           var callOperation = oper === 'delete' ? 'remove' : oper;
                           var name = alias + oper.toUpperCase();
                           var callFunction;
@@ -926,7 +926,7 @@ module.provider('Restangular', function() {
 
               function restangularizeCollectionAndElements(parent, element, route) {
                 var collection = restangularizeCollection(parent, element, route);
-                _.each(collection, function(elem) {
+                angular.forEach(collection, function(elem) {
                   restangularizeElem(parent, elem, route);
                 });
                 return collection;
