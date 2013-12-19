@@ -58,7 +58,7 @@ module.provider('Restangular', function() {
             };
 
             config.withHttpValues = function(httpLocalConfig, obj) {
-              return _.defaults(obj, httpLocalConfig, config.defaultHttpFields);
+              return angular.extend({}, config.defaultHttpFields, httpLocalConfig, obj || {});
             };
 
             config.encodeIds = angular.isUndefined(config.encodeIds) ? true : config.encodeIds;
@@ -496,8 +496,8 @@ module.provider('Restangular', function() {
 
             BaseCreator.prototype.resource = function(current, $http, localHttpConfig, callHeaders, callParams, what, etag, operation) {
 
-                var params = _.defaults(callParams || {}, this.config.defaultRequestParams.common);
-                var headers = _.defaults(callHeaders || {}, this.config.defaultHeaders);
+                var params = angular.extend({}, this.config.defaultRequestParams.common, callParams || {});
+                var headers = angular.extend({}, this.config.defaultHeaders, callHeaders || {});
 
                 if (etag) {
                     if (!config.isSafe(operation)) {
@@ -1121,14 +1121,14 @@ module.provider('Restangular', function() {
                  }
 
                  var createdFunction = function(params, headers, elem) {
-                     var callParams = _.defaults({
-                         params: params,
-                         headers: headers,
-                         elem: elem
-                     }, {
+                     var callParams = angular.extend({
                          params: defaultParams,
                          headers: defaultHeaders,
                          elem: defaultElem
+                     }, {
+                         params: params,
+                         headers: headers,
+                         elem: elem
                      });
                      return bindedFunction(callParams.params, callParams.headers, callParams.elem);
                  };
