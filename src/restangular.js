@@ -19,7 +19,7 @@ module.provider('Restangular', function() {
 
             var absolutePattern = /^https?:\/\//i;
             config.isAbsoluteUrl = function(string) {
-              return angular.isUndefined(config.absoluteUrl) || _.isNull(config.absoluteUrl) ? 
+              return angular.isUndefined(config.absoluteUrl) || null === config.absoluteUrl ? 
                       string && absolutePattern.test(string) :
                       config.absoluteUrl;
             };
@@ -231,7 +231,7 @@ module.provider('Restangular', function() {
             };
 
             config.isValidId = function(elemId) {
-                return "" !== elemId && !angular.isUndefined(elemId) && !_.isNull(elemId);
+                return "" !== elemId && !angular.isUndefined(elemId) && null !== elemId;
             };
 
             config.setUrlToElem = function(elem, url) {
@@ -399,7 +399,7 @@ module.provider('Restangular', function() {
                 }
 
                 typeTransformers.push(function(coll, elem) {
-                    if (_.isNull(isCollection) || (coll == isCollection)) {
+                    if (null === isCollection || (coll == isCollection)) {
                         return transformer(elem);
                     }
                     return elem;
