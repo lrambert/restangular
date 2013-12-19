@@ -19,19 +19,19 @@ module.provider('Restangular', function() {
 
             var absolutePattern = /^https?:\/\//i;
             config.isAbsoluteUrl = function(string) {
-              return _.isUndefined(config.absoluteUrl) || _.isNull(config.absoluteUrl) ? 
+              return angular.isUndefined(config.absoluteUrl) || _.isNull(config.absoluteUrl) ? 
                       string && absolutePattern.test(string) :
                       config.absoluteUrl;
             };
             
-            config.absoluteUrl = _.isUndefined(config.absoluteUrl) ? false : true;
+            config.absoluteUrl = angular.isUndefined(config.absoluteUrl) ? false : true;
             object.setSelfLinkAbsoluteUrl = function(value) {
                 config.absoluteUrl = value;
             };
             /**
              * This is the BaseURL to be used with Restangular
              */
-            config.baseUrl = _.isUndefined(config.baseUrl) ? "" : config.baseUrl;
+            config.baseUrl = angular.isUndefined(config.baseUrl) ? "" : config.baseUrl;
             object.setBaseUrl = function(newBaseUrl) {
                 config.baseUrl = /\/$/.test(newBaseUrl)
                   ? newBaseUrl.substring(0, newBaseUrl.length-1)
@@ -61,7 +61,7 @@ module.provider('Restangular', function() {
               return _.defaults(obj, httpLocalConfig, config.defaultHttpFields);
             };
 
-            config.encodeIds = _.isUndefined(config.encodeIds) ? true : config.encodeIds;
+            config.encodeIds = angular.isUndefined(config.encodeIds) ? true : config.encodeIds;
             object.setEncodeIds = function(encode) {
                 config.encodeIds = encode;
             };
@@ -77,7 +77,7 @@ module.provider('Restangular', function() {
             object.setDefaultRequestParams = function(param1, param2) {
               var methods = [],
                   params = param2 || param1;
-              if (!_.isUndefined(param2)) {
+              if (!angular.isUndefined(param2)) {
                 if (_.isArray(param1)) {
                   methods = param1;
                 } else {
@@ -120,7 +120,7 @@ module.provider('Restangular', function() {
 
             config.isOverridenMethod = function(method, values) {
               var search = values || config.methodOverriders;
-              return !_.isUndefined(_.find(search, function(one) {
+              return !angular.isUndefined(_.find(search, function(one) {
                 return one.toLowerCase() === method.toLowerCase();
               }));
             };
@@ -231,7 +231,7 @@ module.provider('Restangular', function() {
             };
 
             config.isValidId = function(elemId) {
-                return "" !== elemId && !_.isUndefined(elemId) && !_.isNull(elemId);
+                return "" !== elemId && !angular.isUndefined(elemId) && !_.isNull(elemId);
             };
 
             config.setUrlToElem = function(elem, url) {
@@ -243,7 +243,7 @@ module.provider('Restangular', function() {
               return config.getFieldFromElem(config.restangularFields.selfLink, elem);
             };
 
-            config.useCannonicalId = _.isUndefined(config.useCannonicalId) ? false : config.useCannonicalId;
+            config.useCannonicalId = angular.isUndefined(config.useCannonicalId) ? false : config.useCannonicalId;
             object.setUseCannonicalId = function(value) {
                 config.useCannonicalId = value;
                 return this;
@@ -373,7 +373,7 @@ module.provider('Restangular', function() {
              *
              * By default, the suffix is null
              */
-            config.suffix = _.isUndefined(config.suffix) ? null : config.suffix;
+            config.suffix = angular.isUndefined(config.suffix) ? null : config.suffix;
             object.setRequestSuffix = function(newSuffix) {
                 config.suffix = newSuffix;
                 return this;
@@ -426,7 +426,7 @@ module.provider('Restangular', function() {
                   isCollection, route, Restangular);
             };
 
-            config.fullResponse = _.isUndefined(config.fullResponse) ? false : config.fullResponse;
+            config.fullResponse = angular.isUndefined(config.fullResponse) ? false : config.fullResponse;
             object.setFullResponse = function(full) {
                 config.fullResponse = full;
                 return this;
