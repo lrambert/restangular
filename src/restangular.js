@@ -357,7 +357,7 @@ module.provider('Restangular', function() {
                     config.shouldSaveParent = function(route) {
                         return -1 === values.indexOf(route);
                     };
-                } else if (_.isBoolean(values)) {
+                } else if (angular.isBoolean(values)) {
                     config.shouldSaveParent = function() {
                         return !values;
                     };
