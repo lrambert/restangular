@@ -201,12 +201,13 @@ module.provider('Restangular', function() {
 
             config.setFieldToElem = function(field, elem, value) {
               var properties = field.split('.');
+              var lastProperty = properties.pop();
               var idValue = elem;
-              angular.forEach(_.initial(properties), function(prop) {
+              angular.forEach(properties, function(prop) {
                 idValue[prop] = {};
                 idValue = idValue[prop];
               });
-              idValue[_.last(properties)] = value;
+              idValue[lastProperty] = value;
               return this;
             };
 
