@@ -78,7 +78,7 @@ module.provider('Restangular', function() {
               var methods = [],
                   params = param2 || param1;
               if (!angular.isUndefined(param2)) {
-                if (_.isArray(param1)) {
+                if (angular.isArray(param1)) {
                   methods = param1;
                 } else {
                   methods.push(param1);
@@ -352,7 +352,7 @@ module.provider('Restangular', function() {
                 return true;
             };
             object.setParentless = function(values) {
-                if (_.isArray(values)) {
+                if (angular.isArray(values)) {
                     config.shouldSaveParent = function(route) {
                         return -1 === values.indexOf(route);
                     };
@@ -834,7 +834,7 @@ module.provider('Restangular', function() {
               // Elements
 
               function stripRestangular(elem) {
-                if (_.isArray(elem)) {
+                if (angular.isArray(elem)) {
                     var array = [];
                     _.each(elem, function(value) {
                         array.push(stripRestangular(value));
