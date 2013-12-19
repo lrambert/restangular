@@ -14,7 +14,7 @@ module.provider('Restangular', function() {
 
             var safeMethods= ["get", "head", "options", "trace", "getlist"];
             config.isSafe = function(operation) {
-              return _.contains(safeMethods, operation.toLowerCase());
+              return -1 !== safeMethods.indexOf(operation.toLowerCase());
             };
 
             var absolutePattern = /^https?:\/\//i;
@@ -354,7 +354,7 @@ module.provider('Restangular', function() {
             object.setParentless = function(values) {
                 if (_.isArray(values)) {
                     config.shouldSaveParent = function(route) {
-                        return !_.contains(values, route);
+                        return -1 === values.indexOf(route);
                     };
                 } else if (_.isBoolean(values)) {
                     config.shouldSaveParent = function() {
