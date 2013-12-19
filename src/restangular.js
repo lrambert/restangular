@@ -714,19 +714,19 @@ module.provider('Restangular', function() {
 
               function restangularizeBase(parent, elem, route, reqParams) {
                   elem[config.restangularFields.route] = route;
-                  elem[config.restangularFields.getRestangularUrl] = _.bind(urlHandler.fetchUrl, urlHandler, elem);
-                  elem[config.restangularFields.getRequestedUrl] = _.bind(urlHandler.fetchRequestedUrl, urlHandler, elem);
-                  elem[config.restangularFields.addRestangularMethod] = _.bind(addRestangularMethodFunction, elem);
-                  elem[config.restangularFields.clone] = _.bind(copyRestangularizedElement, elem, elem);
+                  elem[config.restangularFields.getRestangularUrl] = angular.bind(urlHandler, urlHandler.fetchUrl, elem);
+                  elem[config.restangularFields.getRequestedUrl] = angular.bind(urlHandler, urlHandler.fetchRequestedUrl, elem);
+                  elem[config.restangularFields.addRestangularMethod] = angular.bind(elem, addRestangularMethodFunction);
+                  elem[config.restangularFields.clone] = angular.bind(elem, copyRestangularizedElement, elem);
                   elem[config.restangularFields.reqParams] = _.isEmpty(reqParams) ? null : reqParams;
-                  elem.withHttpConfig = _.bind(withHttpConfig, elem);
+                  elem.withHttpConfig = angular.bind(elem, withHttpConfig);
 
                   // RequestLess connection
-                  elem[config.restangularFields.one] = _.bind(one, elem, elem);
-                  elem[config.restangularFields.all] = _.bind(all, elem, elem);
-                  elem[config.restangularFields.several] = _.bind(several, elem, elem);
-                  elem[config.restangularFields.oneUrl] = _.bind(oneUrl, elem, elem);
-                  elem[config.restangularFields.allUrl] = _.bind(allUrl, elem, elem);
+                  elem[config.restangularFields.one] = angular.bind(elem, one, elem);
+                  elem[config.restangularFields.all] = angular.bind(elem, all, elem);
+                  elem[config.restangularFields.several] = angular.bind(elem, several, elem);
+                  elem[config.restangularFields.oneUrl] = angular.bind(elem, oneUrl, elem);
+                  elem[config.restangularFields.allUrl] = angular.bind(elem, allUrl, elem);
 
                   if (parent && config.shouldSaveParent(route)) {
                       var parentId = config.getIdFromElem(parent);
@@ -786,11 +786,11 @@ module.provider('Restangular', function() {
               }
               // Promises
               function restangularizePromise(promise, isCollection, valueToFill) {
-                  promise.call = _.bind(promiseCall, promise);
-                  promise.get = _.bind(promiseGet, promise);
+                  promise.call = angular.bind(promise, promiseCall);
+                  promise.get = angular.bind(promise, promiseGet);
                   promise[config.restangularFields.restangularCollection] = isCollection;
                   if (isCollection) {
-                      promise.push = _.bind(promiseCall, promise, "push");
+                      promise.push = angular.bind(promise, promiseCall, "push");
                   }
                   promise.$object = valueToFill;
                   return promise;
@@ -852,7 +852,7 @@ module.provider('Restangular', function() {
               }
 
               function addCustomOperation(elem) {
-                  elem.customOperation = _.bind(customFunction, elem);
+                  elem.customOperation = angular.bind(elem, customFunction);
                   angular.forEach(["put", "post", "get", "delete"], function(oper) {
                       angular.forEach(["do", "custom"], function(alias) {
                           var callOperation = oper === 'delete' ? 'remove' : oper;
@@ -863,13 +863,13 @@ module.provider('Restangular', function() {
                               callFunction = customFunction;
                           } else {
                               callFunction = function(operation, elem, path, params, headers) {
-                                return _.bind(customFunction, this)(operation, path, params, headers, elem);
+                                return angular.bind(this, customFunction)(operation, path, params, headers, elem);
                               };
                           }
-                          elem[name] = _.bind(callFunction, elem, callOperation);
+                          elem[name] = angular.bind(elem, callFunction, callOperation);
                       });
                   });
-                  elem.customGETLIST = _.bind(fetchFunction, elem);
+                  elem.customGETLIST = angular.bind(elem, fetchFunction);
                   elem.doGETLIST = elem.customGETLIST;
               }
 
@@ -895,15 +895,15 @@ module.provider('Restangular', function() {
                   }
 
                   localElem[config.restangularFields.restangularCollection] = false;
-                  localElem[config.restangularFields.get] = _.bind(getFunction, localElem);
-                  localElem[config.restangularFields.getList] = _.bind(fetchFunction, localElem);
-                  localElem[config.restangularFields.put] = _.bind(putFunction, localElem);
-                  localElem[config.restangularFields.post] = _.bind(postFunction, localElem);
-                  localElem[config.restangularFields.remove] = _.bind(deleteFunction, localElem);
-                  localElem[config.restangularFields.head] = _.bind(headFunction, localElem);
-                  localElem[config.restangularFields.trace] = _.bind(traceFunction, localElem);
-                  localElem[config.restangularFields.options] = _.bind(optionsFunction, localElem);
-                  localElem[config.restangularFields.patch] = _.bind(patchFunction, localElem);
+                  localElem[config.restangularFields.get] = angular.bind(localElem, getFunction);
+                  localElem[config.restangularFields.getList] = angular.bind(localElem, fetchFunction);
+                  localElem[config.restangularFields.put] = angular.bind(localElem, putFunction);
+                  localElem[config.restangularFields.post] = angular.bind(localElem, postFunction);
+                  localElem[config.restangularFields.remove] = angular.bind(localElem, deleteFunction);
+                  localElem[config.restangularFields.head] = angular.bind(localElem, headFunction);
+                  localElem[config.restangularFields.trace] = angular.bind(localElem, traceFunction);
+                  localElem[config.restangularFields.options] = angular.bind(localElem, optionsFunction);
+                  localElem[config.restangularFields.patch] = angular.bind(localElem, patchFunction);
 
                   addCustomOperation(localElem);
                   return config.transformElem(localElem, false, route, service);
@@ -914,15 +914,15 @@ module.provider('Restangular', function() {
 
                   var localElem = restangularizeBase(parent, elem, route, reqParams);
                   localElem[config.restangularFields.restangularCollection] = true;
-                  localElem[config.restangularFields.post] = _.bind(postFunction, localElem, null);
-                  localElem[config.restangularFields.remove] = _.bind(deleteFunction, localElem);
-                  localElem[config.restangularFields.head] = _.bind(headFunction, localElem);
-                  localElem[config.restangularFields.trace] = _.bind(traceFunction, localElem);
-                  localElem[config.restangularFields.putElement] = _.bind(putElementFunction, localElem);
-                  localElem[config.restangularFields.options] = _.bind(optionsFunction, localElem);
-                  localElem[config.restangularFields.patch] = _.bind(patchFunction, localElem);
-                  localElem[config.restangularFields.get] = _.bind(getById, localElem);
-                  localElem[config.restangularFields.getList] = _.bind(fetchFunction, localElem, null);
+                  localElem[config.restangularFields.post] = angular.bind(localElem, postFunction, null);
+                  localElem[config.restangularFields.remove] = angular.bind(localElem, deleteFunction);
+                  localElem[config.restangularFields.head] = angular.bind(localElem, headFunction);
+                  localElem[config.restangularFields.trace] = angular.bind(localElem, traceFunction);
+                  localElem[config.restangularFields.putElement] = angular.bind(localElem, putElementFunction);
+                  localElem[config.restangularFields.options] = angular.bind(localElem, optionsFunction);
+                  localElem[config.restangularFields.patch] = angular.bind(localElem, patchFunction);
+                  localElem[config.restangularFields.get] = angular.bind(localElem, getById);
+                  localElem[config.restangularFields.getList] = angular.bind(localElem, fetchFunction, null);
 
                   addCustomOperation(localElem);
                   return config.transformElem(localElem, true, route, service);
@@ -1081,47 +1081,47 @@ module.provider('Restangular', function() {
               }
 
               function getFunction(params, headers) {
-                  return _.bind(elemFunction, this)("get", undefined, params, undefined, headers);
+                  return angular.bind(this, elemFunction)("get", undefined, params, undefined, headers);
               }
 
               function deleteFunction(params, headers) {
-                  return _.bind(elemFunction, this)("remove", undefined, params, undefined, headers);
+                  return angular.bind(this, elemFunction)("remove", undefined, params, undefined, headers);
               }
 
               function putFunction(params, headers) {
-                  return _.bind(elemFunction, this)("put", undefined, params, undefined, headers);
+                  return angular.bind(this, elemFunction)("put", undefined, params, undefined, headers);
               }
 
               function postFunction(what, elem, params, headers) {
-                  return _.bind(elemFunction, this)("post", what, params, elem, headers);
+                  return angular.bind(this, elemFunction)("post", what, params, elem, headers);
               }
 
              function headFunction(params, headers) {
-               return _.bind(elemFunction, this)("head", undefined, params, undefined, headers);
+               return angular.bind(this, elemFunction)("head", undefined, params, undefined, headers);
              }
 
              function traceFunction(params, headers) {
-               return _.bind(elemFunction, this)("trace", undefined, params, undefined, headers);
+               return angular.bind(this, elemFunction)("trace", undefined, params, undefined, headers);
              }
 
              function optionsFunction(params, headers) {
-               return _.bind(elemFunction, this)("options", undefined, params, undefined, headers);
+               return angular.bind(this, elemFunction)("options", undefined, params, undefined, headers);
              }
 
              function patchFunction(elem, params, headers) {
-               return _.bind(elemFunction, this)("patch", undefined, params, elem, headers);
+               return angular.bind(this, elemFunction)("patch", undefined, params, elem, headers);
              }
 
              function customFunction(operation, path, params, headers, elem) {
-                 return _.bind(elemFunction, this)(operation, path, params, elem, headers);
+                 return angular.bind(this, elemFunction)(operation, path, params, elem, headers);
              }
 
              function addRestangularMethodFunction(name, operation, path, defaultParams, defaultHeaders, defaultElem) {
                  var bindedFunction;
                  if (operation === 'getList') {
-                     bindedFunction = _.bind(fetchFunction, this, path);
+                     bindedFunction = angular.bind(this, fetchFunction, path);
                  } else {
-                     bindedFunction = _.bind(customFunction, this, operation, path);
+                     bindedFunction = angular.bind(this, customFunction, operation, path);
                  }
 
                  var createdFunction = function(params, headers, elem) {
@@ -1157,25 +1157,25 @@ module.provider('Restangular', function() {
 
               Configurer.init(service, config);
 
-              service.copy = _.bind(copyRestangularizedElement, service);
+              service.copy = angular.bind(service, copyRestangularizedElement);
 
-              service.withConfig = _.bind(withConfigurationFunction, service);
+              service.withConfig = angular.bind(service, withConfigurationFunction);
 
-              service.one = _.bind(one, service, null);
+              service.one = angular.bind(service, one, null);
 
-              service.all = _.bind(all, service, null);
+              service.all = angular.bind(service, all, null);
 
-              service.several = _.bind(several, service, null);
+              service.several = angular.bind(service, several, null);
 
-              service.oneUrl = _.bind(oneUrl, service, null);
+              service.oneUrl = angular.bind(service, oneUrl, null);
 
-              service.allUrl = _.bind(allUrl, service, null);
+              service.allUrl = angular.bind(service, allUrl, null);
 
-              service.stripRestangular = _.bind(stripRestangular, service);
+              service.stripRestangular = angular.bind(service, stripRestangular);
 
-              service.restangularizeElement = _.bind(restangularizeElem, service);
+              service.restangularizeElement = angular.bind(service, restangularizeElem);
 
-              service.restangularizeCollection = _.bind(restangularizeCollectionAndElements, service);
+              service.restangularizeCollection = angular.bind(service, restangularizeCollectionAndElements);
 
               return service;
           }
