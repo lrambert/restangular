@@ -1025,7 +1025,7 @@ module.provider('Restangular', function() {
                   var callObj = obj || this;
                   var etag = callObj[config.restangularFields.etag];
 
-                  if (_.isObject(callObj) && config.isRestangularized(callObj)) {
+                  if (angular.isObject(callObj) && config.isRestangularized(callObj)) {
                       callObj = stripRestangular(callObj);
                   }
                   var request = config.fullRequestInterceptor(callObj, operation, route, fetchUrl,
