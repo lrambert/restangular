@@ -130,7 +130,7 @@ module.provider('Restangular', function() {
             **/
             config.urlCreator = config.urlCreator || "path";
             object.setUrlCreator = function(name) {
-              if (!_.has(config.urlCreatorFactory, name)) {
+              if (!config.urlCreatorFactory || !config.urlCreatorFactor.hasOwnProperty(name)) {
                   throw new Error("URL Path selected isn't valid");
               }
 
