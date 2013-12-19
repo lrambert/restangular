@@ -110,7 +110,7 @@ module.provider('Restangular', function() {
              **/
             config.methodOverriders = config.methodOverriders || [];
             object.setMethodOverriders = function(values) {
-              var overriders = _.extend([], values);
+              var overriders = angular.extend([], values);
               if (config.isOverridenMethod('delete', overriders)) {
                 overriders.push("remove");
               }
@@ -191,7 +191,7 @@ module.provider('Restangular', function() {
             };
             object.setRestangularFields = function(resFields) {
                 config.restangularFields =
-                  _.extend(config.restangularFields, resFields);
+                  angular.extend(config.restangularFields, resFields);
                 return this;
             };
 
@@ -464,7 +464,7 @@ module.provider('Restangular', function() {
                   var value = configurer[key];
 
                   // Add default parameters
-                  value.params = _.extend({}, value.params,
+                  value.params = angular.extend({}, value.params,
                           config.defaultRequestParams[value.method.toLowerCase()]);
                   // We don't want the ? if no params are there
                   if (_.isEmpty(value.params)) {
@@ -474,7 +474,7 @@ module.provider('Restangular', function() {
                   if (config.isSafe(value.method)) {
 
                       resource[key] = function() {
-                          return $http(_.extend(value, {
+                          return $http(angular.extend(value, {
                               url: url
                           }));
                       };
@@ -482,7 +482,7 @@ module.provider('Restangular', function() {
                   } else {
 
                       resource[key] = function(data) {
-                          return $http(_.extend(value, {
+                          return $http(angular.extend(value, {
                               url: url,
                               data: data
                           }));
@@ -818,11 +818,11 @@ module.provider('Restangular', function() {
 
               function resolvePromise(deferred, response, data, filledValue) {
 
-                _.extend(filledValue, data);
+                angular.extend(filledValue, data);
                 
                 // Trigger the full response interceptor.
                 if (config.fullResponse) {
-                  return deferred.resolve(_.extend(response, {
+                  return deferred.resolve(angular.extend(response, {
                     data: data
                   }));
                 } else {
@@ -990,7 +990,7 @@ module.provider('Restangular', function() {
 
                       });
 
-                      processedData = _.extend(data, processedData);
+                      processedData = angular.extend(data, processedData);
 
                       if (!__this[config.restangularFields.restangularCollection]) {
                           resolvePromise(deferred, response, restangularizeCollection(__this, processedData, what, fullParams), filledArray);
@@ -1053,11 +1053,11 @@ module.provider('Restangular', function() {
                   };
                   // Overring HTTP Method
                   var callOperation = operation;
-                  var callHeaders = _.extend({}, request.headers);
+                  var callHeaders = angular.extend({}, request.headers);
                   var isOverrideOperation = config.isOverridenMethod(operation);
                   if (isOverrideOperation) {
                     callOperation = 'post';
-                    callHeaders = _.extend(callHeaders, {'X-HTTP-Method-Override': operation === 'remove' ? 'DELETE' : operation});
+                    callHeaders = angular.extend(callHeaders, {'X-HTTP-Method-Override': operation === 'remove' ? 'DELETE' : operation});
                   }
 
                   if (config.isSafe(operation)) {
