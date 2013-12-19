@@ -120,9 +120,12 @@ module.provider('Restangular', function() {
 
             config.isOverridenMethod = function(method, values) {
               var search = values || config.methodOverriders;
-              return !angular.isUndefined(_.find(search, function(one) {
-                return one.toLowerCase() === method.toLowerCase();
-              }));
+              for (var i=0,len=search.length; i<len; i++) {
+                if (search[i].toLowerCase() === method.toLowerCase()) {
+                  return true;
+                }
+              }
+              return false;
             };
 
             /**
