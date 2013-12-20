@@ -61,8 +61,7 @@ module.exports = function(grunt) {
         globals: {
           exports: true,
           angular: false,
-          $: false,
-          _: false
+          $: false
         }
       }
     },
