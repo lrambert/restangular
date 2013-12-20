@@ -985,14 +985,16 @@ module.provider('Restangular', function() {
                       var resData = response.data;
                       var fullParams = response.config.params;
                       var data = parseResponse(resData, operation, whatFetched, url, response, deferred);
-                      var processedData = _.map(data, function(elem) {
+                      var processedData = [];
+                      angular.forEach(data, function(elem) {
+                          var val;
                           if (!__this[config.restangularFields.restangularCollection]) {
-                              return restangularizeElem(__this, elem, what, data);
+                              val = restangularizeElem(__this, elem, what, data);
                           } else {
-                              return restangularizeElem(__this[config.restangularFields.parentResource],
+                              val = restangularizeElem(__this[config.restangularFields.parentResource],
                                 elem, __this[config.restangularFields.route], data);
                           }
-
+                          processedData.push(val);
                       });
 
                       processedData = angular.extend(data, processedData);
