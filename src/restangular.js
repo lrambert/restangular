@@ -464,9 +464,7 @@ module.provider('Restangular', function() {
 
             function RestangularResource(config, $http, url, configurer) {
               var resource = {};
-              angular.forEach(_.keys(configurer), function(key) {
-                  var value = configurer[key];
-
+              angular.forEach(configurer, function(value, key) {
                   // Add default parameters
                   value.params = angular.extend({}, value.params,
                           config.defaultRequestParams[value.method.toLowerCase()]);
