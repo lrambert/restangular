@@ -590,13 +590,15 @@ module.provider('Restangular', function() {
             Path.prototype = new BaseCreator();
 
             Path.prototype.base = function(current) {
+                var acum = this.config.baseUrl;
                 var __this = this;
-                return  _.reduce(this.parentsArray(current), function(acum, elem) {
+                angular.forEach(this.parentsArray(current), function(elem) {
                     var elemUrl;
                     var elemSelfLink = __this.config.getUrlFromElem(elem);
                     if (elemSelfLink) {
                       if (__this.config.isAbsoluteUrl(elemSelfLink)) {
-                        return elemSelfLink;
+                        acum = elemSelfLink;
+                        return;
                       } else {
                         elemUrl = elemSelfLink;
                       }
@@ -622,9 +624,10 @@ module.provider('Restangular', function() {
                       }
                     }
 
-                    return acum.replace(/\/$/, "") + "/" + elemUrl;
+                    acum = acum.replace(/\/$/, "") + "/" + elemUrl;
 
-                }, this.config.baseUrl);
+                });
+                return acum;
             };
 
 
