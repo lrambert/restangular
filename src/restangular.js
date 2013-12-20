@@ -3,6 +3,17 @@
 var module = angular.module('restangular', []);
 
 module.provider('Restangular', function() {
+        function isEmptyObject(o) {
+            if (!o) {
+                return true;
+            }
+            
+            for (var key in o) {
+                return false;
+            }
+            return true;
+        }
+
         // Configuration
         var Configurer = {};
         Configurer.init = function(object, config) {
@@ -469,7 +480,7 @@ module.provider('Restangular', function() {
                   value.params = angular.extend({}, value.params,
                           config.defaultRequestParams[value.method.toLowerCase()]);
                   // We don't want the ? if no params are there
-                  if (_.isEmpty(value.params)) {
+                  if (isEmptyObject(value.params)) {
                     delete value.params;
                   }
 
@@ -719,7 +730,7 @@ module.provider('Restangular', function() {
                   elem[config.restangularFields.getRequestedUrl] = angular.bind(urlHandler, urlHandler.fetchRequestedUrl, elem);
                   elem[config.restangularFields.addRestangularMethod] = angular.bind(elem, addRestangularMethodFunction);
                   elem[config.restangularFields.clone] = angular.bind(elem, copyRestangularizedElement, elem);
-                  elem[config.restangularFields.reqParams] = _.isEmpty(reqParams) ? null : reqParams;
+                  elem[config.restangularFields.reqParams] = isEmptyObject(reqParams) ? null : reqParams;
                   elem.withHttpConfig = angular.bind(elem, withHttpConfig);
 
                   // RequestLess connection
