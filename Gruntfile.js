@@ -79,17 +79,6 @@ module.exports = function(grunt) {
         autoWatch: false,
         browsers: ['Firefox']
       },
-      travisUnderscore: {
-        singleRun: true,
-        autoWatch: false,
-        browsers: ['Firefox'],
-        configFile: 'karma.underscore.conf.js',
-      },
-      buildUnderscore: {
-        configFile: 'karma.underscore.conf.js',
-        singleRun: true,
-        autoWatch: false
-      },
       dev: {
         autoWatch: true
       }
@@ -125,11 +114,11 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['build']);
 
   // Build task.
-  grunt.registerTask('build', ['bowerInstall', 'karma:build', 'karma:buildUnderscore', 'concat', 'uglify', 'zip']);
+  grunt.registerTask('build', ['bowerInstall', 'karma:build', 'concat', 'uglify', 'zip']);
 
-  grunt.registerTask('test', ['karma:build', 'karma:buildUnderscore']);
+  grunt.registerTask('test', ['karma:build']);
   
-  grunt.registerTask('travis', ['karma:travis', 'karma:travisUnderscore']);
+  grunt.registerTask('travis', ['karma:travis']);
 
   // Provides the "bump" task.
   grunt.registerTask('bump', 'Increment version number', function() {
