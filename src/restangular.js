@@ -846,7 +846,13 @@ module.provider('Restangular', function() {
                     });
                     return array;
                 } else {
-                    return _.omit(elem, _.values(_.omit(config.restangularFields, 'id')));
+                    var stripped = angular.copy(elem);
+                    angular.forEach(config.restangularFields, function(fieldVal, fieldKey) {
+                        if ('id' !== fieldKey) {
+                            delete stripped[fieldVal];
+                        }
+                    });
+                    return stripped;
                 }
                         
                         
@@ -1151,7 +1157,13 @@ module.provider('Restangular', function() {
              }
 
              function withConfigurationFunction(configurer) {
-                 var newConfig = angular.copy(_.omit(config, 'configuration'));
+                 var newConfig = {};
+                 for (var key in config) {
+                     if (config.hasOwnProperty(key) && 'configuration' !== key) {
+                         var val = config[key];
+                         newConfig[key] = angular.isObject(val) ? angular.copy(val) : val;
+                     }
+                 }
                  Configurer.init(newConfig, newConfig);
                  configurer(newConfig);
                  return createServiceForConfiguration(newConfig);
